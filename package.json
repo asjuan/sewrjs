@@ -1,0 +1,22 @@
+{
+  "name": "sewrJS",
+  "version": "0.0.1",
+  "description": "Yet another functional library",
+  "authors": [
+    "Juan Alvarez"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/asjuan/sewrjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asjuan/sewrjs.git"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jscs": "^3.0.2",
+    "gulp-jshint": "^2.0.0",
+    "jshint": "^2.9.2",
+    "jshint-stylish": "^2.2.0"
+  },
+  "dependencies": {}
+}
