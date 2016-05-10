@@ -1,6 +1,6 @@
 //Author: Juan Alvarez
 //Version: 1.1.0
-'use strict';
+"use strict";
 var sewr = (function functionalise () {
     function createLazyObj(stack) {
         var r = Object.create(null);
@@ -41,11 +41,11 @@ var sewr = (function functionalise () {
         };
         r.stitch = function (gamma) {
             var v;
-            if (current == null) {
-                v = gamma.call(null, original);
+            if (current) {
+                v = gamma.call(null, current);
             }
             else {
-                v = gamma.call(null, current);
+                v = gamma.call(null, original);
             }
             if (typeof v === 'function') {
                 return createLazyObj([v]);
@@ -69,8 +69,8 @@ var sewr = (function functionalise () {
                 var args = Array.prototype.slice.call(arguments);
                 args.forEach(feedList);
                 return gamma.apply(null, list);
-            }    
-        }
+            };
+        };
     };
     o.unCurry = function (curriedGamma) {
         return function () {
@@ -95,11 +95,11 @@ var sewr = (function functionalise () {
     };
     o.setup = function (value) {   
         var m;
-        if (value == null) {
-            m = createLazyObj([]);
-        }    
-        else {
+        if (value) {
             m = createBindObj(value, value);
+        }    
+        else {            
+            m = createLazyObj([]);
         } 
         m.compose = function (beta) {
             return m.stitch(beta);
