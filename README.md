@@ -1,6 +1,7 @@
 # sewrjs
 
-![alt text](https://github.com/asjuan/sewrjs/src/images/sewr.png "Logo")
+[logo]: https://github.com/asjuan/sewrjs/src/images/sewr.png "Logo"
+
 
 Yet another javascript library that provides basic funcional operators.
 
