@@ -1,4 +1,3 @@
-# sewrjs
 ![alt text][logo]
 [logo]: https://github.com/asjuan/sewrjs/blob/master/src/images/sewr.png "Logo"
 
