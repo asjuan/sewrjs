@@ -1,5 +1,7 @@
 # sewrjs
 
+![alt text](https://github.com/asjuan/sewrjs/src/images/sewr.png "Logo")
+
 Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is the composition of both of them. 

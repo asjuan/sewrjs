@@ -1,7 +1,6 @@
 //Author: Juan Alvarez
-//Version: 1.1.0
-"use strict";
 var sewr = (function functionalise () {
+    'use strict';
     function createLazyObj(stack) {
         var r = Object.create(null);
         r.stitch = function (gamma) {
@@ -75,7 +74,7 @@ var sewr = (function functionalise () {
     o.unCurry = function (curriedGamma) {
         return function () {
             var args = Array.prototype.slice.call(arguments);
-            if (args.length == 0) {
+            if (args.length === 0) {
                 return curriedGamma.call(null);
             }
             if (args.length == 1) {
