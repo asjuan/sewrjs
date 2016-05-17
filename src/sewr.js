@@ -1,5 +1,4 @@
-//Author: Juan Alvarez
-var sewr = (function functionalise () {
+var Sewr = (function functionalise () {
     'use strict';
     function createLazyObj(stack) {
         var r = Object.create(null);
@@ -106,4 +105,4 @@ var sewr = (function functionalise () {
         return m;
     };
     return o;
-})(sewr);
+})();

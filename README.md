@@ -29,7 +29,7 @@ fXg(1);  //this will result in 3
 ```
 In sewr the same can be accomplished by
 ```
-var fXg = sewr.stitch(f).stitch(g);
+var fXg = Sewr.stitch(f).stitch(g);
 
 fXg.applyAll(1); //will return 3
 ```
@@ -38,7 +38,7 @@ In real life scenarios, not all functions have just one parameter, to compose th
 function sum(a, b) {
     return a + b;
 }
-var curriedSum = sewr.curry(sum);
+var curriedSum = Sewr.curry(sum);
 ```
 
 Once the function has been curried now on it can be stitched!
