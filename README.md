@@ -5,7 +5,7 @@ Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is the composition of both of them. 
 
-This tiny library is unintrusive, so it won't interfere with existing libraries.
+This tiny library won't interfere with other libraries.
 
 ## Examples
 
@@ -33,7 +33,7 @@ var fXg = Sewr.stitch(f).stitch(g);
 
 fXg.applyAll(1); //will return 3
 ```
-In real life scenarios, not all functions have just one parameter, to compose them we can curry them
+In real life scenarios, not all functions require one parameter. In order to compose, we must curry it as shownbelow 
 ```
 function sum(a, b) {
     return a + b;

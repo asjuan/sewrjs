@@ -30,6 +30,9 @@ var Sewr = (function functionalise () {
                 return v;
             }
         };
+        r.sth = function (gamma) {
+            return r.stitch(gamma);
+        };
         return r;
     }
     function createBindObj(current, original) {
@@ -52,6 +55,9 @@ var Sewr = (function functionalise () {
                 v = current;
             }
             return createBindObj(v, original);
+        };
+        r.sth = function (gamma) {
+            return r.stitch(gamma);
         };
         return r;
     }
@@ -85,6 +91,9 @@ var Sewr = (function functionalise () {
     o.stitch = function (gamma) {
         return createLazyObj([]).stitch(gamma);
     };
+    o.sth = function (beta) {
+        return createLazyObj([]).stitch(beta);
+    };
     o.lazyBinder = function (lazyObj) {
         var f = lazyObj.applyAll;
         return function (x) {
@@ -99,9 +108,6 @@ var Sewr = (function functionalise () {
         else {            
             m = createLazyObj([]);
         } 
-        m.compose = function (beta) {
-            return m.stitch(beta);
-        };
         return m;
     };
     return o;

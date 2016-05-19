@@ -11,9 +11,9 @@ describe("sewrLib", function() {
     var r = oldSumAgain(1,2);
     expect(r).toEqual(3);
   });
-  it("should eagerly resolve, run curried function,  and return 12", function() {
+  it("should eagerly resolve, run curried function, and return 12", function() {
     var gimme5 = Sewr.setup(5);
-    var r = gimme5.compose(curriedSum(1)).stitch(times2).applyAll();
+    var r = gimme5.sth(curriedSum(1)).sth(times2).applyAll();
     expect(r).toEqual(12);
   });
   it("should use lazy one, run curried function, then return 20", function() {
@@ -26,8 +26,8 @@ describe("sewrLib", function() {
     expect(r).toEqual(10);
   });
   it("should lazy compose and return 20", function() {
-    var lazied = Sewr.stitch(curriedSum(7)).stitch(times2).applyAll;
-    var c = Sewr.setup(3).compose(lazied);
+    var lazied = Sewr.sth(curriedSum(7)).sth(times2).applyAll;
+    var c = Sewr.setup(3).sth(lazied);
     expect(c.applyAll()).toEqual(20);
   });
   it("should bind using lazyBinder one and return 20", function() {
