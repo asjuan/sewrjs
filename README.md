@@ -33,7 +33,7 @@ var fXg = Sewr.stitch(f).stitch(g);
 
 fXg.applyAll(1); //will return 3
 ```
-In real life scenarios, not all functions require one parameter. In order to compose, we must curry it as shownbelow 
+In real life scenarios, not all functions require one parameter. In order to compose, we must curry it as shown below 
 ```
 function sum(a, b) {
     return a + b;
@@ -42,3 +42,10 @@ var curriedSum = Sewr.curry(sum);
 ```
 
 Once the function has been curried now on it can be stitched!
+```
+function identity(x) {
+    return x;
+}
+var patchwork = Sewr.stitch(curriedSum).stitch(times2).stitch(identity).stitch(times2);    
+var r = patchwork.unFold(1, 2)    
+```

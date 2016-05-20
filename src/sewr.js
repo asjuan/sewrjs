@@ -1,43 +1,67 @@
 var Sewr = (function functionalise () {
     'use strict';
-    function createLazyObj(stack) {
+    function getRemaining (v, stack, pos) {
+        var todos = stack;
+        todos[pos] = v;
+        return todos;
+    }
+    function resolve(x, stack) {
+        var i;
+        var v = {
+            value: x
+        };        
+        for (i = 0; i < stack.length; i++) {
+            v.value = stack[i].call(null, v.value);    
+            if (typeof v.value === 'function') {
+                var todos = getRemaining(v.value, stack, i);
+                return {
+                    sequence: sequenceResolver(todos)
+                };
+            }
+        }
+        return v;
+    }
+    function resolveUncurried(curriedGamma, args) {
+        if (args.length === 0) {
+            return curriedGamma.call(null);
+        }
+        if (args.length == 1) {
+            return curriedGamma.call(null, args[0]); 
+        }
+        return curriedGamma.call(null, args[0]).apply(null, args.slice(1));
+     }
+    function sequenceResolver(stack) {   
         var r = Object.create(null);
         r.stitch = function (gamma) {
             stack.push(gamma);
-            return createLazyObj(stack);
+            return sequenceResolver(stack);
         };
-        r.applyAll = function (x) {
-            var i;
-            var v = x;
-            var isCurried = false;
-            var restack = [];
-            for (i = 0; i < stack.length; i++) {
-                if (isCurried) {
-                    restack.push(stack[i]);
-                }
-                else {
-                    v = stack[i].call(null, v);    
-                    if (typeof v === 'function') {
-                        isCurried = true;
-                        restack.push(v);
-                    }
-                }
+        r.on = function (x) {
+            var resolution = resolve(x, stack);
+            if (resolution.value) return resolution.value;
+            return resolution.sequence;
+        };
+        r.unFold = function () {
+            var args = Array.prototype.slice.call(arguments);
+            var i = 0;
+            var resolution = resolve(args[i], stack);
+            var step;
+            if (resolution.value) return resolution.value;
+            step = resolution.sequence;
+            while(step.on) {
+                i += 1;
+                step = step.on(args[i]);                
             }
-            if (isCurried) {                       
-                return createLazyObj(restack);
-            }
-            else {
-                return v;
-            }
+            return step;
         };
         r.sth = function (gamma) {
             return r.stitch(gamma);
         };
         return r;
     }
-    function createBindObj(current, original) {
+    function eagerResolver(current, original) {
         var r = Object.create(null);
-        r.applyAll = function () {
+        r.on = function () {
             return current;
         };
         r.stitch = function (gamma) {
@@ -49,12 +73,12 @@ var Sewr = (function functionalise () {
                 v = gamma.call(null, original);
             }
             if (typeof v === 'function') {
-                return createLazyObj([v]);
+                return sequenceResolver([v]);
             }
             if (typeof v === 'undefined') {
                 v = current;
             }
-            return createBindObj(v, original);
+            return eagerResolver(v, original);
         };
         r.sth = function (gamma) {
             return r.stitch(gamma);
@@ -79,23 +103,17 @@ var Sewr = (function functionalise () {
     o.unCurry = function (curriedGamma) {
         return function () {
             var args = Array.prototype.slice.call(arguments);
-            if (args.length === 0) {
-                return curriedGamma.call(null);
-            }
-            if (args.length == 1) {
-                return curriedGamma.call(null, args[0]); 
-            }
-            return curriedGamma.call(null, args[0]).apply(null, args.slice(1));
+            return resolveUncurried(curriedGamma, args);
         };
     };
     o.stitch = function (gamma) {
-        return createLazyObj([]).stitch(gamma);
+        return sequenceResolver([]).stitch(gamma);
     };
     o.sth = function (beta) {
-        return createLazyObj([]).stitch(beta);
+        return sequenceResolver([]).stitch(beta);
     };
     o.lazyBinder = function (lazyObj) {
-        var f = lazyObj.applyAll;
+        var f = lazyObj.on;
         return function (x) {
             return f.call(null, x);
         };
@@ -103,10 +121,10 @@ var Sewr = (function functionalise () {
     o.setup = function (value) {   
         var m;
         if (value) {
-            m = createBindObj(value, value);
+            m = eagerResolver(value, value);
         }    
         else {            
-            m = createLazyObj([]);
+            m = sequenceResolver([]);
         } 
         return m;
     };
