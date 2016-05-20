@@ -31,7 +31,7 @@ In sewr the same can be accomplished by
 ```
 var fXg = Sewr.stitch(f).stitch(g);
 
-fXg.applyAll(1); //will return 3
+fXg.on(1); //will return 3
 ```
 In real life scenarios, not all functions require one parameter. In order to compose, we must curry it as shown below 
 ```
