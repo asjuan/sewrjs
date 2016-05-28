@@ -3,9 +3,9 @@
 
 Yet another javascript library that provides basic funcional operators.
 
-Functions can be stitched together to produce a new function, that is the composition of both of them. 
+Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
 
-This tiny library won't interfere with other libraries.
+This tiny library won't interfere with existing libraries.
 
 ## Examples
 
@@ -41,14 +41,14 @@ function sum(a, b) {
 var curriedSum = Sewr.curry(sum);
 ```
 
-Once the function has been curried now on it can be stitched!
+Once the function has been curried, now on it can be stitched
 ```
 function identity(x) {
     return x;
 }
 var composed = Sewr.stitch(curriedSum).stitch(times2).stitch(identity).stitch(times2);
 ```
-Supose it is needed to pass in parameters 1 and 2. To do that there are two possibilities.
+Supose it is needed to pass in parameters 1 and 2. To do that, there are two possibilities.
 
 First, it is possible to pass one parameter at a time as follows:
 ``` 
