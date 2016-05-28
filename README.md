@@ -46,6 +46,16 @@ Once the function has been curried now on it can be stitched!
 function identity(x) {
     return x;
 }
-var patchwork = Sewr.stitch(curriedSum).stitch(times2).stitch(identity).stitch(times2);    
-var r = patchwork.unFold(1, 2)    
+var composed = Sewr.stitch(curriedSum).stitch(times2).stitch(identity).stitch(times2);
+```
+Supose it is needed to pass in parameters 1 and 2. To do that there are two possibilities.
+
+First, it is possible to pass one parameter at a time as follows:
+``` 
+var foo = composed.on(1).on(2);
+```
+Alternatively, composed function could be unfolded: 
+```
+var bar = composed.unFold(1, 2);
+foo === bar //true
 ```
