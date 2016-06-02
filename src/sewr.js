@@ -1,4 +1,4 @@
-var Sewr = (function functionalise () {
+var sewr = (function functionalise () {
     'use strict';
     function getRemaining (v, stack, pos) {
         var todos = stack;
