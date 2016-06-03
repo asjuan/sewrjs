@@ -1,6 +1,6 @@
-var sewr = (function functionalise () {
+var sewr = (function functionalise() {
     'use strict';
-    function getRemaining (v, stack, pos) {
+    function getRemaining(v, stack, pos) {
         var todos = stack;
         todos[pos] = v;
         return todos;
@@ -9,9 +9,9 @@ var sewr = (function functionalise () {
         var i;
         var v = {
             value: x
-        };        
+        };
         for (i = 0; i < stack.length; i++) {
-            v.value = stack[i].call(null, v.value);    
+            v.value = stack[i].call(null, v.value);
             if (typeof v.value === 'function') {
                 var todos = getRemaining(v.value, stack, i);
                 return {
@@ -21,16 +21,23 @@ var sewr = (function functionalise () {
         }
         return v;
     }
+    function recursiveResolver(pos, x, stack) {
+        var r = stack[pos].call(null, x);
+        if (typeof(r)==='function' || pos === stack.length - 1) {
+            return r;
+        }
+        return recursiveResolver(pos + 1, r, stack);
+    }
     function resolveUncurried(curriedGamma, args) {
         if (args.length === 0) {
             return curriedGamma.call(null);
         }
         if (args.length == 1) {
-            return curriedGamma.call(null, args[0]); 
+            return curriedGamma.call(null, args[0]);
         }
         return curriedGamma.call(null, args[0]).apply(null, args.slice(1));
-     }
-    function sequenceResolver(stack) {   
+    }
+    function sequenceResolver(stack) {
         var r = Object.create(null);
         r.stitch = function (gamma) {
             stack.push(gamma);
@@ -42,17 +49,15 @@ var sewr = (function functionalise () {
             return resolution.sequence;
         };
         r.unFold = function () {
-            var args = Array.prototype.slice.call(arguments);
-            var i = 0;
-            var resolution = resolve(args[i], stack);
-            var step;
-            if (resolution.value) return resolution.value;
-            step = resolution.sequence;
-            while(step.on) {
-                i += 1;
-                step = step.on(args[i]);                
+            var args  = Array.prototype.slice.call(arguments),
+                todos = stack.slice(1),
+                f = recursiveResolver(0, args[0], stack), 
+                r;
+            if (typeof (f) === 'function') {
+                todos.unshift(f);
+                r = recursiveResolver(0, f.apply(null, args.slice(1)), todos);
             }
-            return step;
+            return r;
         };
         r.sth = function (gamma) {
             return r.stitch(gamma);
@@ -118,14 +123,14 @@ var sewr = (function functionalise () {
             return f.call(null, x);
         };
     };
-    o.setup = function (value) {   
+    o.setup = function (value) {
         var m;
         if (value) {
             m = eagerResolver(value, value);
-        }    
-        else {            
+        }
+        else {
             m = sequenceResolver([]);
-        } 
+        }
         return m;
     };
     return o;

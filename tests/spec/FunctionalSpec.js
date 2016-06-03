@@ -17,8 +17,8 @@ describe("sewrLib", function() {
     expect(r).toEqual(12);
   });
   it("should use lazy one, run curried function, then return 20", function() {
-    var c = sewr.stitch(curriedSum(7)).stitch(times2);
-    expect(c.on(3)).toEqual(20);
+    var r = sewr.stitch(curriedSum(7)).stitch(times2).on(3);
+    expect(r).toEqual(20);
   });
   it("should result be deferred, pass in parameters and return 10", function() {
     var lazied = sewr.stitch(curriedSum).stitch(times2);
@@ -51,8 +51,17 @@ describe("sewrLib", function() {
     function identity(x) {
       return x;
     }
-    var patchwork = sewr.stitch(curriedSum).stitch(times2).stitch(identity).stitch(times2);    
+    var patchwork = sewr.stitch(curriedSum).stitch(times2).stitch(identity).stitch(times2);
     var r = patchwork.unFold(1, 2)
     expect(r).toEqual(12);
+  });
+  it("should resolve 3 parameters", function () {
+    function line(m, a, b) {
+      return m * a + b;
+    }
+    var mycurry = sewr.curry(line);
+    var composed = sewr.stitch(mycurry).stitch(times2);
+    var r =  composed.unFold(2,1,1);
+    expect(r).toEqual(6); 
   });
 });
