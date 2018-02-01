@@ -5,7 +5,18 @@ Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
 
-This tiny library won't interfere with existing libraries.
+Latest version 0.2
+
+Maybe monad intruduced
+```
+//Given
+arr = [];
+f = function (value) {
+    arr.push(value);
+};
+//Following will produce arr = [1,1]
+sewr.toMaybe(1).stitch(f).stitch(f);
+```
 
 ## Examples
 

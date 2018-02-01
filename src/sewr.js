@@ -1,4 +1,16 @@
-var sewr = (function functionalise() {
+var createMaybe = function (value) {
+    var o = Object.create(null);
+    o.isEmpty = value == null || value == undefined;
+    o.stitch = function (gamma) {
+        var s = createMaybe();
+        if (o.isEmpty) return s;
+        s.isEmpty = false;
+        gamma(value);
+        return s;
+    };
+    return o;
+};
+var sewr = function functionalise() {
     'use strict';
     function getRemaining(v, stack, pos) {
         var todos = stack;
@@ -23,7 +35,7 @@ var sewr = (function functionalise() {
     }
     function recursiveResolver(pos, x, stack) {
         var r = stack[pos].call(null, x);
-        if (typeof(r)==='function' || pos === stack.length - 1) {
+        if (typeof (r) === 'function' || pos === stack.length - 1) {
             return r;
         }
         return recursiveResolver(pos + 1, r, stack);
@@ -49,9 +61,9 @@ var sewr = (function functionalise() {
             return resolution.sequence;
         };
         r.unFold = function () {
-            var args  = Array.prototype.slice.call(arguments),
+            var args = Array.prototype.slice.call(arguments),
                 todos = stack.slice(1),
-                f = recursiveResolver(0, args[0], stack), 
+                f = recursiveResolver(0, args[0], stack),
                 r;
             if (typeof (f) === 'function') {
                 todos.unshift(f);
@@ -133,5 +145,7 @@ var sewr = (function functionalise() {
         }
         return m;
     };
+    o.toMaybe = createMaybe;
     return o;
-})();
+};
+module.exports = sewr();
