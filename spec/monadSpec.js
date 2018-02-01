@@ -18,8 +18,13 @@ describe("maybe monad", function () {
         expect(maybe.isEmpty).toBe(false);
         expect(arr.length).toBe(1);
     });
-    it("pusheit twice because valid", function () {
+    it("push it twice because valid", function () {
         sewr.toMaybe(1).stitch(f).stitch(f);
         expect(arr.length).toBe(2);
+    });
+    it("accumulates if available", function () {
+        var g = function (value) { return value + 1; };
+        var result = sewr.toMaybe(2).stitch(g);
+        expect(result.value).toBe(3)
     });
 });

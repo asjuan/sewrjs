@@ -1,11 +1,11 @@
 var createMaybe = function (value) {
     var o = Object.create(null);
     o.isEmpty = value == null || value == undefined;
+    o.value = null;
     o.stitch = function (gamma) {
-        var s = createMaybe();
-        if (o.isEmpty) return s;
-        s.isEmpty = false;
-        gamma(value);
+        if (o.isEmpty) return createMaybe();
+        var s = createMaybe(value);
+        s.value = gamma(value);
         return s;
     };
     return o;
