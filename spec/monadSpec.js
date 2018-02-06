@@ -23,8 +23,9 @@ describe("maybe monad", function () {
         expect(arr.length).toBe(2);
     });
     it("accumulates if available", function () {
+        var f = function (value) { return value * 2 };
         var g = function (value) { return value + 1; };
-        var result = sewr.toMaybe(2).stitch(g);
-        expect(result.value).toBe(3)
+        var result = sewr.toMaybe(2).stitch(f).stitch(g);
+        expect(result.value).toBe(5)
     });
 });

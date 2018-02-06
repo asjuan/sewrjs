@@ -1,14 +1,26 @@
+var checkEmpty = function (value) {
+    return value == null || value == undefined;
+};
 var createMaybe = function (value) {
-    var o = Object.create(null);
-    o.isEmpty = value == null || value == undefined;
-    o.value = null;
-    o.stitch = function (gamma) {
-        if (o.isEmpty) return createMaybe();
-        var s = createMaybe(value);
-        s.value = gamma(value);
-        return s;
+    'use strict';
+    var outer = Object.create(null);
+    outer.isEmpty = checkEmpty(value);
+    outer.value = null;
+    outer.stitch = function (gamma) {
+        var nested = null;
+        var result = null;
+        if (outer.isEmpty) return createMaybe();
+        result = gamma(value);
+        if (checkEmpty(result)) {
+            nested = createMaybe(value);
+        }
+        else {
+            nested = createMaybe(result);
+        }
+        nested.value = result;
+        return nested;
     };
-    return o;
+    return outer;
 };
 var sewr = function functionalise() {
     'use strict';
@@ -148,4 +160,6 @@ var sewr = function functionalise() {
     o.toMaybe = createMaybe;
     return o;
 };
-module.exports = sewr();
+if (!checkEmpty(module) && !checkEmpty(module.exports)) {
+    module.exports = sewr();
+}
