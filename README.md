@@ -1,11 +1,8 @@
-![alt text][logo]
-[logo]: https://github.com/asjuan/sewrjs/blob/master/src/images/sewr.png "Logo"
-
 Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
 
-Latest version 1.4
+Latest version 1.5
 
 Maybe monad intruduced
 ```
