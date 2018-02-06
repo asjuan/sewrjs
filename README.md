@@ -2,7 +2,17 @@ Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
 
-Latest version 1.5
+## Basic composition
+To compose two unary functions
+```
+var sewr = require("sewrjs");
+var f = function (v) { return v + 2 };
+var g = function (v) { return v / 3 };
+var fXg = sewr.stitch(f).stitch(g);
+fXg.on(10); // this resolvea (10 + 2)/3 == 4 
+```
+
+Latest version 1.6
 
 Maybe monad intruduced
 ```
@@ -11,11 +21,12 @@ arr = [];
 f = function (value) {
     arr.push(value);
 };
-//Following will produce arr = [1,1]
+// Following sequence will produce arr = [1, 1]
 sewr.toMaybe(1).stitch(f).stitch(f);
+// but if null is passed, same will get arr = []
 ```
 
-## Examples
+## Other examples
 
 Let f and g be unary functions, both of them take in a numeric parameter and return numbers as well. 
 ```
