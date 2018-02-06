@@ -1,7 +1,8 @@
 {
   "name": "sewrjs",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Yet another functional library",
+  "main": "bin/sewrlib.js",
   "authors": [
     "Juan Alvarez"
   ],
@@ -9,7 +10,7 @@
   "scripts": {
     "test": "nodemon --exec jasmine",
     "check": "jshint --verbose src/sewr.js",
-    "ugly": "uglifyjs src/sewr.js -c -m reserved=['exports'] -o src/sewr.min.js"
+    "ugly": "uglifyjs src/sewr.js -c -m reserved=['exports'] -o bin/sewr.js"
   },
   "homepage": "https://github.com/asjuan/sewrjs",
   "repository": {
