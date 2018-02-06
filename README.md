@@ -5,7 +5,7 @@ Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
 
-Latest version 0.2
+Latest version 1.3
 
 Maybe monad intruduced
 ```
