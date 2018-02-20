@@ -21,7 +21,7 @@ describe("maybe monad", function () {
         expect(maybe.value.length).toBe(1);
         expect(maybe.value[0]).toBe(2);
     });
-    it("curriedfumulates if available", function () {
+    it("5 when 2 is passed in", function () {
         var f = function (m) {
             var o = Object.create(null);
             o.value = m.value * 2;
@@ -37,7 +37,7 @@ describe("maybe monad", function () {
         var result = sewr.toMaybe(0).stitch(f).stitch(g).on(2);
         expect(result.value).toBe(5);
     });
-    it("curriedfumulates again using shorthand", function () {
+    it("gets 4 using shorthand", function () {
         var f = function (m) {
             var o = Object.create(null);
             o.value = m.value + 2;
