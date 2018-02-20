@@ -1,6 +1,6 @@
 {
   "name": "sewrjs",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Yet another functional library",
   "main": "./lib/sewr.js",
   "authors": [
@@ -9,8 +9,8 @@
   "license": "MIT",
   "scripts": {
     "test": "nodemon --exec jasmine",
-    "check": "jshint --verbose src/sewr.js",
-    "ugly": "uglifyjs src/sewr.js -c -m reserved=['exports'] -o lib/sewr.js"
+    "check": "jshint --verbose lib/sewr.js",
+    "ugly": "uglifyjs lib/sewr.js -c -m reserved=['exports'] -o lib/sewr.min.js"
   },
   "homepage": "https://github.com/asjuan/sewrjs",
   "repository": {

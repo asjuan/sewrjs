@@ -1,4 +1,4 @@
-var sewr = require("../src/sewr");
+var sewr = require("../lib/sewr");
 describe("maybe monad", function () {
     var f;
     var arr;
@@ -23,9 +23,14 @@ describe("maybe monad", function () {
         expect(arr.length).toBe(2);
     });
     it("accumulates if available", function () {
-        var f = function (value) { return value * 2 };
+        var f = function (value) { return value * 2; };
         var g = function (value) { return value + 1; };
         var result = sewr.toMaybe(2).stitch(f).stitch(g);
-        expect(result.value).toBe(5)
+        expect(result.value).toBe(5);
+    });
+    it("accumulates again using shorthand", function () {
+        var f = function (value) { return value + 2; };
+        var result = sewr.toMaybe(2).sth(f);
+        expect(result.value).toBe(4);
     });
 });

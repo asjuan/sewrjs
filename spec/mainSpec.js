@@ -4,7 +4,7 @@ function sum(a, b) {
 function times2(x) {
   return x * 2;
 }
-var sewr = require("../src/sewr");
+var sewr = require("../lib/sewr");
 var curriedSum = sewr.curry(sum);
 describe("sewrLib", function () {
   it("should uncurry and return 3", function () {
