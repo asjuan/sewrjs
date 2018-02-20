@@ -1,6 +1,6 @@
 {
   "name": "sewrjs",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Yet another functional library",
   "main": "./lib/sewr.js",
   "authors": [
