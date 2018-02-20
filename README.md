@@ -79,6 +79,6 @@ var f = function (m) {
 // Following sequence 
 var maybe = sewr.toMaybe(0).sth(f).on(null);
 // will produce
-// result.isEmpty && result.value === 0
+// maybe.isEmpty && maybe.value === 0
 
 ```
