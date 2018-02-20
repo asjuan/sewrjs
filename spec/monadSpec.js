@@ -1,36 +1,62 @@
 var sewr = require("../lib/sewr");
 describe("maybe monad", function () {
-    var f;
-    var arr;
+    var curriedf;
+    var initial = [];
     beforeEach(function () {
-        arr = [];
-        f = function (value) {
-            arr.push(value);
+        var f = function (acc, curr) {
+            if (curr.isEmpty) return curr;
+            acc.value.push(curr.value);
+            return acc;
         };
+        curriedf = sewr.curry(f);
     });
     it("ignores f when empty", function () {
-        var o = sewr.toMaybe(null).stitch(f);
-        expect(o.isEmpty).toBe(true);
-        expect(arr.length).toBe(0);
+        var maybe = sewr.toMaybe([]).stitch(curriedf).on(initial).on(null);
+        expect(maybe.isEmpty).toBe(true);
+        expect(maybe.value.length).toBe(0);
     });
     it("pushes to arr when valid", function () {
-        var maybe = sewr.toMaybe(1).stitch(f);
+        var maybe = sewr.toMaybe([]).stitch(curriedf).on(initial).on(2);
         expect(maybe.isEmpty).toBe(false);
-        expect(arr.length).toBe(1);
+        expect(maybe.value.length).toBe(1);
+        expect(maybe.value[0]).toBe(2);
     });
-    it("push it twice because valid", function () {
-        sewr.toMaybe(1).stitch(f).stitch(f);
-        expect(arr.length).toBe(2);
-    });
-    it("accumulates if available", function () {
-        var f = function (value) { return value * 2; };
-        var g = function (value) { return value + 1; };
-        var result = sewr.toMaybe(2).stitch(f).stitch(g);
+    it("curriedfumulates if available", function () {
+        var f = function (m) {
+            var o = Object.create(null);
+            o.value = m.value * 2;
+            o.isEmpty = m.isEmpty;
+            return o;
+        };
+        var g = function (m) {
+            var o = Object.create(null);
+            o.value = m.value + 1;
+            o.isEmpty = m.isEmpty;
+            return o;
+        };
+        var result = sewr.toMaybe(0).stitch(f).stitch(g).on(2);
         expect(result.value).toBe(5);
     });
-    it("accumulates again using shorthand", function () {
-        var f = function (value) { return value + 2; };
-        var result = sewr.toMaybe(2).sth(f);
+    it("curriedfumulates again using shorthand", function () {
+        var f = function (m) {
+            var o = Object.create(null);
+            o.value = m.value + 2;
+            o.isEmpty = m.isEmpty;
+            return o;
+        };
+        var result = sewr.toMaybe(0).sth(f).on(2);
         expect(result.value).toBe(4);
+    });
+    it("is both empty and zero because of null", function () {
+        var f = function (m) {
+            var o = { isEmpty: false, value: 0 };
+            if (m.isEmpty) return m;
+            o.value = m.value + 2;
+            o.isEmpty = m.isEmpty;
+            return o;
+        };
+        var maybe = sewr.toMaybe(0).sth(f).on(null);
+        expect(maybe.value).toBe(0);
+        expect(maybe.isEmpty).toBe(true);
     });
 });

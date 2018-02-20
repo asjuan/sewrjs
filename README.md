@@ -12,21 +12,9 @@ var fXg = sewr.stitch(f).stitch(g);
 fXg.on(10); // this resolvea (10 + 2)/3 == 4 
 ```
 
-Latest version 1.6
+Latest version 1.8
 
-Maybe monad intruduced
-```
-//Given
-arr = [];
-f = function (value) {
-    arr.push(value);
-};
-// Following sequence will produce arr = [1, 1]
-sewr.toMaybe(1).stitch(f).stitch(f);
-// but if null is passed, same will get arr = []
-```
-
-## Other examples
+## Some examples
 
 Let f and g be unary functions, both of them take in a numeric parameter and return numbers as well. 
 ```
@@ -77,4 +65,20 @@ Alternatively, composed function could be unfolded:
 ```
 var bar = composed.unFold(1, 2);
 foo === bar //true
+```
+Maybe monad example
+```
+//Given
+var f = function (m) {
+    var o = { isEmpty: false, value: 0 };
+    if (m.isEmpty) return m;
+    o.value = m.value + 2;
+    o.isEmpty = m.isEmpty;
+    return o;
+};
+// Following sequence 
+var maybe = sewr.toMaybe(0).sth(f).on(null);
+// will produce
+// result.isEmpty && result.value === 0
+
 ```
