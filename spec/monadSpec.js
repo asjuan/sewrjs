@@ -59,4 +59,35 @@ describe("maybe monad", function () {
         expect(maybe.value).toBe(0);
         expect(maybe.isEmpty).toBe(true);
     });
+    it("fixes Upper case properties ", function () {
+        var brokentree = {
+            name: "me",
+            phones: [
+                {
+                    Number: "1111111",
+                    Type: "mobile"
+                },
+                {
+                    Number: "2222222",
+                    Type: "work"
+                }
+            ],
+            Flag: true
+        };
+        var fixer = function (m) {
+            var fixed = {};
+            for (let propertyName in m.value) {
+                if (m.hasLeavesOn(propertyName)) {
+                    fixed[propertyName.toLowerCase()] = m.recurseOn(propertyName);
+                }
+                else {
+                    fixed[propertyName.toLowerCase()] = m.value[propertyName];
+                }
+            }
+            return fixed;
+        };
+        var tree = sewr.toRecursive(fixer).on(brokentree);
+        expect(tree.flag).toBeTruthy();
+        expect(tree.phones[0].type).toBe("mobile");
+    });
 });
