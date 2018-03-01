@@ -49,17 +49,13 @@ describe("maybe monad", function () {
     });
     it("is both empty and zero because of null", function () {
         var f = function (m) {
-            var o = { isEmpty: false, value: 0 };
-            if (m.isEmpty) return m;
-            o.value = m.value + 2;
-            o.isEmpty = m.isEmpty;
-            return o;
+            if (m.isEmpty) return m.value;
+            return m.value + 2;
         };
-        var maybe = sewr.toMaybe(0).sth(f).on(null);
-        expect(maybe.value).toBe(0);
-        expect(maybe.isEmpty).toBe(true);
+        var result = sewr.toMaybe(0).sth(f).on(null);
+        expect(result).toBe(0);
     });
-    it("fixes Upper case properties ", function () {
+    it("fixes properties coming in upper case", function () {
         var brokentree = {
             name: "me",
             phones: [
@@ -69,12 +65,13 @@ describe("maybe monad", function () {
                 },
                 {
                     Number: "2222222",
-                    Type: "work"
+                    Type: "work",
+                    Notes: ["bar", "foo", null]
                 }
             ],
             Flag: true
         };
-        var fixer = function (m) {
+        var fix = function (m) {
             var fixed = {};
             for (let propertyName in m.value) {
                 if (m.hasLeavesOn(propertyName)) {
@@ -86,8 +83,11 @@ describe("maybe monad", function () {
             }
             return fixed;
         };
-        var tree = sewr.toRecursive(fixer).on(brokentree);
+        var tree = sewr.toRecursive(fix).on(brokentree);
         expect(tree.flag).toBeTruthy();
         expect(tree.phones[0].type).toBe("mobile");
+        expect(tree.phones[1].notes[0]).toBe("bar");
+        expect(tree.phones[1].notes[1]).toBe("foo");
+        expect(tree.phones[1].notes[2]).toBeNull();
     });
 });
