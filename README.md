@@ -152,7 +152,30 @@ It is also possible to group items by given property
 var result = q.groupBy('q').all();
 ```
 
-The example above will store information as follows 
+The example above, result will be as follows 
 ```
-{}
+[
+	{
+		"q": "M",
+		"grouped": [
+			{
+				"a": 1,
+				"t": "A"
+			}
+		]
+	},
+	{
+		"q": "H",
+		"grouped": [
+			{
+				"a": 2,
+				"t": "B"
+			},
+			{
+				"a": 5,
+				"t": "A"
+			}
+		]
+	}
+]
 ```
