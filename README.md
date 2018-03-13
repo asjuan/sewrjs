@@ -2,7 +2,7 @@ Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
 
-Latest version 0.2.0
+Latest version 0.2.1
 
 New feature: query operators on arrays
 
@@ -133,10 +133,12 @@ var fixed = sewr.toRecursive(fix).on(brokenobj);
 filter, map, some, reduce among others are great built in methods, and provide ways to deal with arrays in a functional way. The extension sewr provides are not intended to replace them to improve legibility and simplify some tasks. Examples,
 
 ```
- var arr = [{ a: 1, t: "A", q: "M" }, 
+var arr = [{ a: 1, t: "A", q: "M" }, 
          { a: 2, t: "B", q: "H" }, 
          { a: 5, t: "A", q: "H" }
      ];
+var q = sewr.query(arr);  // q is the query on arr
+
 // simple find
 var filtered = q.find({ t: "A" }).all();
 // brings a: 1 and a: 5
