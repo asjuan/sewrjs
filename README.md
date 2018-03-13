@@ -2,7 +2,9 @@ Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
 
-Latest version 0.1.9
+Latest version 0.2.0
+
+New feature: query operators on arrays
 
 ## Composition
 
@@ -91,7 +93,7 @@ Maybe monad example
 
 In the example below an object literal is read. But some property names start with a capital letter. So, a function is created to fix all property names.
 ```
-var brokentree = {
+var brokenobj = {
     name: "me",
     phones: [
         {
@@ -123,5 +125,34 @@ var fix = function (m) {
     }
     return fixed;
 };
-var tree = sewr.toRecursive(fix).on(brokentree);
+var fixed = sewr.toRecursive(fix).on(brokenobj);
+```
+
+## Operators on arrays
+
+filter, map, some, reduce among others are great built in methods, and provide ways to deal with arrays in a functional way. The extension sewr provides are not intended to replace them to improve legibility and simplify some tasks. Examples,
+
+```
+ var arr = [{ a: 1, t: "A", q: "M" }, 
+         { a: 2, t: "B", q: "H" }, 
+         { a: 5, t: "A", q: "H" }
+     ];
+// simple find
+var filtered = q.find({ t: "A" }).all();
+// brings a: 1 and a: 5
+
+// composed queries
+var all = q.find({q: "H"}).find({t: "B"}).all();
+var last = q.find({q: "H"}).find({t: "B"}).last();
+var except = q.but({ t: "B" }).all();
+```
+
+It is also possible to group items by given property
+```
+var result = q.groupBy('q').all();
+```
+
+The example above will store information as follows 
+```
+{}
 ```
