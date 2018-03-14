@@ -67,4 +67,18 @@ describe("query pipelines", function () {
         expect(result[0].grouped.length).toBe(1);
         expect(result[1].grouped.length).toBe(2);
     });
+    it("counts 3 when no criteria", function () {
+        var times = sewr.querydef(function (d) {
+            return d.count();
+        });
+        var result = times(arr);
+        expect(result).toBe(3);
+    });
+    it("counts times instances in which q: H", function () {
+        var timesH = sewr.querydef(function (d) {
+            return d.count({ q: "H" });
+        });
+        var result = timesH(arr);
+        expect(result).toBe(2);
+    });
 });

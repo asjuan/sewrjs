@@ -2,7 +2,7 @@ Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
 
-Latest version 0.2.2
+Latest version 0.2.3
 
 ## Composition
 
@@ -47,7 +47,7 @@ fXg.on(10); // equals to 4, because (10 + 2)/3
 
 Composition becomes very useful when dealing with arrays.
 
-Following operators are not intended to replace Array.prototype members like filter, map, reduce among others. 
+Note: following operators are not intended to replace Array.prototype members like filter, map, reduce among others. 
 
 Operators are a set of extensions that improve legibility and simplify some tasks. 
 
@@ -62,25 +62,24 @@ var arr = [
      ];
 
 // simple find using low level API
-var query = require("../lib/sewquery");
+var query = require("sewquery");
 var filtered = query()(arr).find({ t: "A" }).all();
 // brings a: 1 and a: 5
 ```
 The code above has the inconvenience of fixing that particular array. Because of that, it is strongly recommended to use sewr intead. 
 
 ```
-var sewr = require("../lib/sewr");
+var sewr = require("sewrjs");
 var f = sewr.querydef(function (d) {
-    // d is the definition object
     return d.groupBy('q').all();
 });
 
 ```
-Now, f becomes an array processing pipeline. If arr as an argument
+Now, f becomes an array processing pipeline. If the variable arr is passed in as an argument
 ```
 var result = f(arr);
 ```
-It will produce following array
+It will produce following grouped array
 ```
 [
 	{
@@ -119,6 +118,7 @@ function (d) {
     // return d.find({q: "H"}).find({t: "B"}).all(); // apply two filters, then get all
     // return d.find({q: "H"}).find({t: "B"}).last(); // same, but just get the last one
     // return d.but({ t: "B" }).all(); // this one is to find all but t:B
+    // return d.count({ r: B}); // counts instances in which r: B
 };
 ```
 
