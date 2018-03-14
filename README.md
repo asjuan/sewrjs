@@ -2,9 +2,7 @@ Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
 
-Latest version 0.2.1
-
-New feature: query operators on arrays
+Latest version 0.2.2
 
 ## Composition
 
@@ -43,6 +41,85 @@ var f = function (v) { return v + 2 };
 var g = function (v) { return v / 3 };
 var fXg = sewr.stitch(f).stitch(g);
 fXg.on(10); // equals to 4, because (10 + 2)/3  
+```
+
+## Composing operators on arrays
+
+Composition becomes very useful when dealing with arrays.
+
+Following operators are not intended to replace Array.prototype members like filter, map, reduce among others. 
+
+Operators are a set of extensions that improve legibility and simplify some tasks. 
+
+Some examples,
+
+```
+// Let
+var arr = [
+         { a: 1, t: "A", q: "M" }, 
+         { a: 2, t: "B", q: "H" }, 
+         { a: 5, t: "A", q: "H" }
+     ];
+
+// simple find using low level API
+var query = require("../lib/sewquery");
+var filtered = query()(arr).find({ t: "A" }).all();
+// brings a: 1 and a: 5
+```
+The code above has the inconvenience of fixing that particular array. Because of that, it is strongly recommended to use sewr intead. 
+
+```
+var sewr = require("../lib/sewr");
+var f = sewr.querydef(function (d) {
+    // d is the definition object
+    return d.groupBy('q').all();
+});
+
+```
+Now, f becomes an array processing pipeline. If arr as an argument
+```
+var result = f(arr);
+```
+It will produce following array
+```
+[
+	{
+		"q": "M",
+		"grouped": [
+			{
+				"a": 1,
+				"t": "A"
+			}
+		]
+	},
+	{
+		"q": "H",
+		"grouped": [
+			{
+				"a": 2,
+				"t": "B"
+			},
+			{
+				"a": 5,
+				"t": "A"
+			}
+		]
+	}
+]
+```
+
+Operators
+---------
+
+sewr.querydef needs a function to be passed in, the argument of that function is the definition object. 
+
+```
+function (d) {
+    return d.groupBy('q').all(); // group by property then show all
+    // return d.find({q: "H"}).find({t: "B"}).all(); // apply two filters, then get all
+    // return d.find({q: "H"}).find({t: "B"}).last(); // same, but just get the last one
+    // return d.but({ t: "B" }).all(); // this one is to find all but t:B
+};
 ```
 
 ## Curry multiple params
@@ -126,58 +203,4 @@ var fix = function (m) {
     return fixed;
 };
 var fixed = sewr.toRecursive(fix).on(brokenobj);
-```
-
-## Operators on arrays
-
-filter, map, some, reduce among others are great built in methods, and provide ways to deal with arrays in a functional way. The extension sewr provides are not intended to replace them to improve legibility and simplify some tasks. Examples,
-
-```
-var arr = [{ a: 1, t: "A", q: "M" }, 
-         { a: 2, t: "B", q: "H" }, 
-         { a: 5, t: "A", q: "H" }
-     ];
-var q = sewr.query(arr);  // q is the query on arr
-
-// simple find
-var filtered = q.find({ t: "A" }).all();
-// brings a: 1 and a: 5
-
-// composed queries
-var all = q.find({q: "H"}).find({t: "B"}).all();
-var last = q.find({q: "H"}).find({t: "B"}).last();
-var except = q.but({ t: "B" }).all();
-```
-
-It is also possible to group items by given property
-```
-var result = q.groupBy('q').all();
-```
-
-The example above, result will be as follows 
-```
-[
-	{
-		"q": "M",
-		"grouped": [
-			{
-				"a": 1,
-				"t": "A"
-			}
-		]
-	},
-	{
-		"q": "H",
-		"grouped": [
-			{
-				"a": 2,
-				"t": "B"
-			},
-			{
-				"a": 5,
-				"t": "A"
-			}
-		]
-	}
-]
 ```
