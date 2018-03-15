@@ -81,4 +81,13 @@ describe("query pipelines", function () {
         var result = timesH(arr);
         expect(result).toBe(2);
     });
+    it("order by q then by t", function () {
+        var f = sewr.querydef(function (d) {
+            return d.orderBy('q').orderBy('t').all();
+        });
+        var result = f(arr);
+        expect(result[0].a).toBe(5);
+        expect(result[1].a).toBe(2);
+        expect(result[2].a).toBe(1);
+    });
 });

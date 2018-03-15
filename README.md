@@ -2,7 +2,7 @@ Yet another javascript library that provides basic funcional operators.
 
 Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
 
-Latest version 0.2.3
+Latest version 0.2.4
 
 ## Composition
 
@@ -119,6 +119,8 @@ function (d) {
     // return d.find({q: "H"}).find({t: "B"}).last(); // same, but just get the last one
     // return d.but({ t: "B" }).all(); // this one is to find all but t:B
     // return d.count({ r: B}); // counts instances in which r: B
+    // return d.orderBy('q').orderBy('t').all(); // orders by first criteria then second. 
+    //                                           // second does not override first
 };
 ```
 

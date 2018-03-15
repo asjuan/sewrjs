@@ -1,6 +1,6 @@
 {
   "name": "sewrjs",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Yet another functional library",
   "main": "./lib/sewr.js",
   "authors": [
@@ -23,5 +23,9 @@
     "nodemon": "^1.14.11",
     "uglify-js": "^3.3.9"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "keywords": [
+    "util",
+    "math"
+  ]
 }
