@@ -1,8 +1,97 @@
-Yet another javascript library that provides basic funcional operators.
+Yet another javascript library aimed to ease composition of functions.
 
-Functions can be stitched together to produce a new function, that is refered as the composition of both of them. 
+Functions can be stitched together to produce a new function, that is refered as the composition of both of them.
 
-Latest version 0.2.4
+Sewr does not modify current prototype chains, so it should not interfere with existing objects.
+
+Latest version 0.2.5
+
+# Arrays
+
+This section will help to understand composition, using operations on arrays as first use case scenario.
+
+Note: following operators are not intended to replace Array.prototype members like filter, map, reduce among others. 
+
+Operators are a set of extensions that improve legibility and simplify some tasks. 
+
+Examples,
+
+```
+// Let
+var arr = [
+         { a: 1, t: "A", q: "M" }, 
+         { a: 2, t: "B", q: "H" }, 
+         { a: 5, t: "A", q: "H" }
+     ];
+
+```
+Sewr provide querydef method, that can be used as follows. 
+
+```
+var sewr = require("sewrjs");
+var f = sewr.querydef(function (d) {
+    return d.groupBy('q').all();
+});
+
+```
+Now, _f_ becomes an array processing pipeline. If the variable _arr_ is passed in as an argument
+```
+var result = f(arr);
+```
+It will produce following grouped array
+```
+[
+	{
+		"q": "M",
+		"grouped": [
+			{
+				"a": 1,
+				"t": "A"
+			}
+		]
+	},
+	{
+		"q": "H",
+		"grouped": [
+			{
+				"a": 2,
+				"t": "B"
+			},
+			{
+				"a": 5,
+				"t": "A"
+			}
+		]
+	}
+]
+```
+
+## Operators
+
+sewr.querydef needs a function to be passed in, the argument of that function is the definition object. 
+
+|  Method    | Example                 | Comment                         |
+|------------|-------------------------|---------------------------------|
+| groupBy    | d.groupBy('q').all();   | group by property then show all |
+| find       | d.find({q: "H"}).all(); | find will match criteria        |
+| last       | d.find({q: "H"}).last();| after query, get last member    |
+| first      | d.find({q: "H"}).first()| similar, get first member       |
+| but        | d.but({t: "B"}).all();  | finds all but when _t_ equals B |
+| count      | d.count({r: "B"});      | number of times r equals B      |
+| orderBy    | d.order('q').all();     | orders by property _q_          |
+| hasAny     | d.hasAny();             | true if just for valid non empty arrays|
+
+
+It is also possible to chain methods 
+
+```
+function (d) {
+    return return d.find({q: "H"}).find({t: "B"}).all(); // apply two filters, then get all
+    // return d.orderBy('q').orderBy('t').all(); // orders by first criteria then by property t. 
+};
+```
+
+# Theory
 
 ## Composition
 
@@ -41,87 +130,6 @@ var f = function (v) { return v + 2 };
 var g = function (v) { return v / 3 };
 var fXg = sewr.stitch(f).stitch(g);
 fXg.on(10); // equals to 4, because (10 + 2)/3  
-```
-
-## Composing operators on arrays
-
-Composition becomes very useful when dealing with arrays.
-
-Note: following operators are not intended to replace Array.prototype members like filter, map, reduce among others. 
-
-Operators are a set of extensions that improve legibility and simplify some tasks. 
-
-Some examples,
-
-```
-// Let
-var arr = [
-         { a: 1, t: "A", q: "M" }, 
-         { a: 2, t: "B", q: "H" }, 
-         { a: 5, t: "A", q: "H" }
-     ];
-
-// simple find using low level API
-var query = require("sewquery");
-var filtered = query()(arr).find({ t: "A" }).all();
-// brings a: 1 and a: 5
-```
-The code above has the inconvenience of fixing that particular array. Because of that, it is strongly recommended to use sewr intead. 
-
-```
-var sewr = require("sewrjs");
-var f = sewr.querydef(function (d) {
-    return d.groupBy('q').all();
-});
-
-```
-Now, f becomes an array processing pipeline. If the variable arr is passed in as an argument
-```
-var result = f(arr);
-```
-It will produce following grouped array
-```
-[
-	{
-		"q": "M",
-		"grouped": [
-			{
-				"a": 1,
-				"t": "A"
-			}
-		]
-	},
-	{
-		"q": "H",
-		"grouped": [
-			{
-				"a": 2,
-				"t": "B"
-			},
-			{
-				"a": 5,
-				"t": "A"
-			}
-		]
-	}
-]
-```
-
-Operators
----------
-
-sewr.querydef needs a function to be passed in, the argument of that function is the definition object. 
-
-```
-function (d) {
-    return d.groupBy('q').all(); // group by property then show all
-    // return d.find({q: "H"}).find({t: "B"}).all(); // apply two filters, then get all
-    // return d.find({q: "H"}).find({t: "B"}).last(); // same, but just get the last one
-    // return d.but({ t: "B" }).all(); // this one is to find all but t:B
-    // return d.count({ r: B}); // counts instances in which r: B
-    // return d.orderBy('q').orderBy('t').all(); // orders by first criteria then second. 
-    //                                           // second does not override first
-};
 ```
 
 ## Curry multiple params

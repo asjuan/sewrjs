@@ -90,4 +90,14 @@ describe("query pipelines", function () {
         expect(result[1].a).toBe(2);
         expect(result[2].a).toBe(1);
     });
+    it("detects not valid array", function () {
+        var f = sewr.querydef(function (d) {
+            if (d.hasAny()) {
+                return d.all();
+            }
+            return [];
+        });
+        var result = f("wow");
+        expect(result.length).toBe(0);
+    });
 });
