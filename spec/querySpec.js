@@ -90,6 +90,15 @@ describe("query pipelines", function () {
         expect(result[1].a).toBe(2);
         expect(result[2].a).toBe(1);
     });
+    it("order descending by a", function () {
+        var f = sewr.querydef(function (d) {
+            return d.descBy('a').all();
+        });
+        var result = f(arr);
+        expect(result[0].a).toBe(5);
+        expect(result[1].a).toBe(2);
+        expect(result[2].a).toBe(1);
+    });
     it("detects not valid array", function () {
         var f = sewr.querydef(function (d) {
             if (d.hasAny()) {

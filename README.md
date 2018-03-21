@@ -78,8 +78,10 @@ sewr.querydef needs a function to be passed in, the argument of that function is
 | first      | d.find({q: "H"}).first()| similar, get first member       |
 | but        | d.but({t: "B"}).all();  | finds all but when _t_ equals B |
 | count      | d.count({r: "B"});      | number of times r equals B      |
-| orderBy    | d.order('q').all();     | orders by property _q_          |
 | hasAny     | d.hasAny();             | true if just for valid non empty arrays|
+| orderBy    | d.orderBy('q').all();   | orders by property _q_          |
+| descBy     | d.descBy('q').all();    | descending order | 
+
 
 
 It is also possible to chain methods 
@@ -161,7 +163,7 @@ foo === bar // true
 ```
 ## Maybe and recurse
 
-Maybe monad example
+Maybe object example
 ```
 // Given
  var f = function (m) {
