@@ -109,4 +109,16 @@ describe("query pipelines", function () {
         var result = f("wow");
         expect(result.length).toBe(0);
     });
+    it("uses first and last shorthand when t = B", function () {
+        var getFirst = sewr.querydef(function (d) {
+            return d.first({ t: "B" });
+        });
+        var getLast = sewr.querydef(function (d) {
+            return d.last({ t: "B" });
+        });
+        var one = getFirst(arr);
+        var two = getLast(arr);
+        expect(one.a).toBe(2);
+        expect(two.a).toBe(2);
+    });
 });
