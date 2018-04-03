@@ -82,9 +82,9 @@ sewr.querydef needs a function to be passed in, the argument of that function is
 | count      | d.count({r: "B"});      | number of times r equals B      |
 | hasAny     | d.hasAny();             | true if just for valid non empty arrays|
 | orderBy    | d.orderBy('q').all();   | orders by property _q_          |
-| descBy     | d.descBy('q').all();    | descending order | 
-
-
+| descBy     | d.descBy('q').all();    | descending order                |
+| thenAsc    | ...d').thenAsc('a')...  | syntactic sugar to chain order by|
+| thenDes    | ...d').thenDes('a')...  | syntactic sugar to chain order by|
 
 It is also possible to chain methods 
 
