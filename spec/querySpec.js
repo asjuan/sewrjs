@@ -1,6 +1,10 @@
 var sewr = require("../lib/sewr");
 var query = require("../lib/sewquery");
 var arr = [{ a: 1, t: "A", q: "M" }, { a: 2, t: "B", q: "H" }, { a: 5, t: "A", q: "H" }];
+var bigarr = [];
+for (let index = 0; index < 100000; index += 1) {
+    bigarr.push({ pos: index });
+}
 describe("low level API", function () {
     it("gets empty array when no criteria", function () {
         var filtered = query()(arr).find().all();
@@ -53,6 +57,10 @@ describe("low level API", function () {
         expect(result[1].q).toBe("H");
         expect(result[0].grouped.length).toBe(1);
         expect(result[1].grouped.length).toBe(2);
+    });
+    it("stress t = A", function () {
+        var found = query()(bigarr).first({ pos: 10000 });
+        expect(found.pos).toBe(10000);
     });
 });
 describe("query pipelines", function () {
@@ -111,7 +119,7 @@ describe("query pipelines", function () {
     });
     it("detects not valid array", function () {
         var f = sewr.querydef(function (d) {
-            if (d.hasAny()) {
+            if (d.hasArray()) {
                 return d.all();
             }
             return [];
@@ -130,5 +138,15 @@ describe("query pipelines", function () {
         var two = getLast(arr);
         expect(one.a).toBe(2);
         expect(two.a).toBe(2);
+    });
+    it("uses has to determine if criteria is matched", function () {
+        var checkHappy = sewr.querydef(function (d) {
+            return d.has({ a: 2, t: "B" });
+        });
+        var checkSad = sewr.querydef(function (d) {
+            return d.has({ t: "X" });
+        });
+        expect(checkHappy(arr)).toBe(true);
+        expect(checkSad(arr)).toBe(false);
     });
 });
