@@ -58,9 +58,13 @@ describe("low level API", function () {
         expect(result[0].grouped.length).toBe(1);
         expect(result[1].grouped.length).toBe(2);
     });
-    it("stress t = A", function () {
+    it("stresses first", function () {
         var found = query()(bigarr).first({ pos: 10000 });
         expect(found.pos).toBe(10000);
+    });
+    it("stresses last", function () {
+        var found = query()(bigarr).last({ pos: 90000});
+        expect(found.pos).toBe(90000);
     });
 });
 describe("query pipelines", function () {

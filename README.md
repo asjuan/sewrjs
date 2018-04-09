@@ -4,7 +4,7 @@ Functions can be stitched together to produce a new function, that is refered as
 
 Sewr does not modify current prototype chains, so it should not interfere with existing objects.
 
-Latest version 0.2.8
+Latest version 0.2.9
 
 # Arrays
 
@@ -75,14 +75,14 @@ sewr.querydef needs a function to be passed in, the argument of that function is
 | groupBy    | d.groupBy('q').all();   | group by property then show all |
 | find       | d.find({q: "H"}).all(); | find will match criteria        |
 | last       | d.find({q: "H"}).last();| after query, get last member    |
-| first      | d.find({q: "H"}).first()| similar, get first member       |
-| first      | d.first({q: "H"});      | find first method               |
-| last       | d.last({q: "H"});       | find last method                |
+| first      | d.find({q: "H"}).first()| similar, get first member (it is not ideal because ) |
+| first      | d.first({q: "H"});      | find first method (better performance)  |
+| last       | d.last({q: "H"});       | find last method (better performance)  |
 | but        | d.but({t: "B"}).all();  | finds all but when _t_ equals B |
 | count      | d.count({r: "B"});      | number of times r equals B      |
 | hasAny (deprecated) | d.hasAny();             | checks valid arrays, but will be replaced in future releases by method below this line |
 | hasArray   | d.hasArray();           | true if valid non empty array   |
-| has        | d.has({q: "H"})         | true if one element matches criteria |
+| has        | d.has({q: "H"})         | true if one element matches criteria (ideal to deal with big datasets) |
 | orderBy    | d.orderBy('q').all();   | orders by property _q_          |
 | descBy     | d.descBy('q').all();    | descending order                |
 | thenAsc    | ...d').thenAsc('a')...  | syntactic sugar to chain order by|
