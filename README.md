@@ -4,7 +4,7 @@ Functions can be stitched together to produce a new function, that is refered as
 
 Sewr does not modify current prototype chains, so it should not interfere with existing objects.
 
-Latest version 0.2.9
+Latest version 0.3.0
 
 # Arrays
 
