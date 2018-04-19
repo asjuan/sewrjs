@@ -224,25 +224,24 @@ var fixed = sewr.toRecursive(fix).on(brokenobj);
 ```
 ## Iterables
 
-The following is just a proof of concept. Following example shows one possible way to implement fibonacci sequence
+ToIterable gets one function as a parameter. That function gets access to the m parameter.
+This argument is a container that has following properties
+* input
+* initAcum
+* accumulator
+* runAgain
+Example below shows one possible way to implement fibonacci sequence
 
 ```
 function fibo(m) {
     var calculated, last;
-    m.initAccumulator([1]);
+    m.initAccumulator([1, 1]);
     last = m.accumulator.length;
-    if (last > 1) {
-         calculated = m.accumulator[last - 1] + m.accumulator[last - 2];
-    } else {
-          calculated = m.accumulator[last - 1];
-    }
-    m.runAgain(m.accumulator.concat(calculated))
-          .until(function(acc) {
-          return acc.length < m.value;
+    calculated = m.accumulator[last - 1] + m.accumulator[last - 2];
+    m.runAgain(m.accumulator.concat(calculated)).until(function (acc) {
+        return acc.length < m.input;
     });
-    return m.accumulator;
 }
-
 var sequence = sewr.toIterable(fibo).on(5); 
 // this will produce [1, 1, 2, 3, 5]
 ```

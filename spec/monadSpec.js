@@ -93,18 +93,13 @@ describe("maybe monad", function () {
     it("produces fibo sequence to 5", function () {
         function fibo(m) {
             var calculated, last;
-            m.initAccumulator([1]);
+            m.initAccumulator([1, 1]);
             last = m.accumulator.length;
-            if (last > 1) {
-                calculated = m.accumulator[last - 1] + m.accumulator[last - 2];
-            } else {
-                calculated = m.accumulator[last - 1];
-            }
+            calculated = m.accumulator[last - 1] + m.accumulator[last - 2];
             m.runAgain(m.accumulator.concat(calculated))
-             .until(function(acc) {
-                 return acc.length < m.value;
-            });
-            return m.accumulator;
+                .until(function (acc) {
+                    return acc.length < m.input;
+                });
         }
         var sequence = sewr.toIterable(fibo).on(5);
         expect(sequence[0]).toBe(1);
