@@ -90,4 +90,27 @@ describe("maybe monad", function () {
         expect(tree.phones[1].notes[1]).toBe("foo");
         expect(tree.phones[1].notes[2]).toBeNull();
     });
+    it("produces fibo sequence to 5", function () {
+        function fibo(m) {
+            var calculated, last;
+            m.initAccumulator([1]);
+            last = m.accumulator.length;
+            if (last > 1) {
+                calculated = m.accumulator[last - 1] + m.accumulator[last - 2];
+            } else {
+                calculated = m.accumulator[last - 1];
+            }
+            m.runAgain(m.accumulator.concat(calculated))
+             .until(function(acc) {
+                 return acc.length < m.value;
+            });
+            return m.accumulator;
+        }
+        var sequence = sewr.toIterable(fibo).on(5);
+        expect(sequence[0]).toBe(1);
+        expect(sequence[1]).toBe(1);
+        expect(sequence[2]).toBe(2);
+        expect(sequence[3]).toBe(3);
+        expect(sequence[4]).toBe(5);
+    });
 });
