@@ -4,7 +4,7 @@ Functions can be stitched together to produce a new function, that is refered as
 
 Sewr does not modify current prototype chains, so it should not interfere with existing objects.
 
-Latest version 0.3.1
+Latest version 0.3.2
 
 # Arrays
 
@@ -224,8 +224,7 @@ var fixed = sewr.toRecursive(fix).on(brokenobj);
 ```
 ## Reducing
 
-ToReduce gets two arguments, a seed and a function. That function gets access to the m object.
-This object is a container that has following properties
+ToReduce gets two arguments, a seed and a function. Function gets access to the m object and m is a container, that has following properties
 
 * input
 * accumulator
