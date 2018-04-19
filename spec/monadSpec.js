@@ -90,18 +90,35 @@ describe("maybe monad", function () {
         expect(tree.phones[1].notes[1]).toBe("foo");
         expect(tree.phones[1].notes[2]).toBeNull();
     });
+    it("accumulates total sad", function () {
+        function sumBad(m) {
+            var result = m.accumulator.total + m.input[m.accumulator.index];
+            m.runAgain({index: m.accumulator.index + 1, total: result});
+        }
+        var bad = sewr.toReduce({index: 0, total: 0}, sumBad).on([1, 1]);
+        expect(bad.total).toBe(0);
+    });
+    it("accumulates total happy", function () {
+        function sumOk(m) {
+            var result = m.accumulator.total + m.input[m.accumulator.index];
+            m.runAgain({index: m.accumulator.index + 1, total: result}).while(function (o) {
+                return o.index < m.input.length;
+            });
+        }
+        var ok = sewr.toReduce({index: 0, total: 0}, sumOk).on([1, 1]);
+        expect(ok.total).toBe(2);
+    });
     it("produces fibo sequence to 5", function () {
         function fibo(m) {
             var calculated, last;
-            m.initAccumulator([1, 1]);
             last = m.accumulator.length;
             calculated = m.accumulator[last - 1] + m.accumulator[last - 2];
             m.runAgain(m.accumulator.concat(calculated))
-                .until(function (acc) {
+                .while(function (acc) {
                     return acc.length < m.input;
                 });
         }
-        var sequence = sewr.toIterable(fibo).on(5);
+        var sequence = sewr.toReduce([1, 1], fibo).on(5);
         expect(sequence[0]).toBe(1);
         expect(sequence[1]).toBe(1);
         expect(sequence[2]).toBe(2);

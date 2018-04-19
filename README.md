@@ -4,7 +4,7 @@ Functions can be stitched together to produce a new function, that is refered as
 
 Sewr does not modify current prototype chains, so it should not interfere with existing objects.
 
-Latest version 0.3.0
+Latest version 0.3.1
 
 # Arrays
 
@@ -222,26 +222,26 @@ var fix = function (m) {
 };
 var fixed = sewr.toRecursive(fix).on(brokenobj);
 ```
-## Iterables
+## Reducing
 
-ToIterable gets one function as a parameter. That function gets access to the m parameter.
-This argument is a container that has following properties
+ToReduce gets two arguments, a seed and a function. That function gets access to the m object.
+This object is a container that has following properties
+
 * input
-* initAcum
 * accumulator
 * runAgain
-Example below shows one possible way to implement fibonacci sequence
+
+Example below shows one possible way to implement fibonacci sequence.
 
 ```
 function fibo(m) {
     var calculated, last;
-    m.initAccumulator([1, 1]);
     last = m.accumulator.length;
     calculated = m.accumulator[last - 1] + m.accumulator[last - 2];
-    m.runAgain(m.accumulator.concat(calculated)).until(function (acc) {
+    m.runAgain(m.accumulator.concat(calculated)).while(function (acc) {
         return acc.length < m.input;
     });
 }
-var sequence = sewr.toIterable(fibo).on(5); 
+var sequence = sewr.toReduce([1, 1],fibo).on(5); 
 // this will produce [1, 1, 2, 3, 5]
 ```
